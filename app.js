@@ -1,8 +1,13 @@
 const fs = require('fs');
 const express = require('express');
+const morgan = require(`morgan`);
+
+///////////////////////////////////////1. MIDDLEWARE/////////////////////////////////////
 
 const app = express();
 app.use(express.json());
+
+app.use(morgan('dev'));
 
 app.use((req, res, next) => {
   console.log(`Hello from middle of nowhere `);
@@ -25,6 +30,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
+//////////////////////////////////////////2. ROUTE HANDLERS///////////////////////////
 const getALLTours = (req, res) => {
   ///// for getting all tours.
   console.log(req.requestTime);
@@ -123,6 +129,8 @@ const updateTour = (req, res) => {
 // app.delete('/api/v1/tours/:id', deleteTour);
 // app.patch('/api/v1/tours/:id', updateTour);
 // This all will work same as written below by  .route method.
+
+//////////////////////////////////////////////ROUTES/////////////////////////////////
 app
   .route('/api/v1/tours')
   .get(getALLTours)
@@ -134,8 +142,9 @@ app
   .patch(updateTour)
   .delete(deleteTour);
 
-const port = 3000;
+////////////////////////////////////4. START SERVER////////////////////////
 
+const port = 3000;
 app.listen(port, () => {
   console.log(`APP runnning on port ${port}.....`);
 });

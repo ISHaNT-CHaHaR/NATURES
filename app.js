@@ -3,6 +3,17 @@ const express = require('express');
 
 const app = express();
 app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(`Hello from middle of nowhere `);
+  next();
+});
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
+
 // app.get('/', (req, res) => {
 //   res.status(200).json({ message: 'Herro from server', app: 'Natours' });
 // });
@@ -16,8 +27,10 @@ const tours = JSON.parse(
 
 const getALLTours = (req, res) => {
   ///// for getting all tours.
+  console.log(req.requestTime);
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours

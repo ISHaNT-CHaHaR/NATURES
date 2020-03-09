@@ -4,6 +4,29 @@ const tours = JSON.parse(
 );
 
 //////////////////////////////////////////2. ROUTE HANDLERS///////////////////////////
+
+exports.checkId = (req, res, next, val) => {
+  console.log(`This is i'd ${val}`);
+
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    });
+  }
+  next();
+};
+
+exports.checkBody = (req, res, next) => {
+  if (req.body.name == null || req.body.price == null) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Missing name or price'
+    });
+  }
+  next();
+};
+
 exports.getALLTours = (req, res) => {
   ///// for getting all tours.
   console.log(req.requestTime);
@@ -24,12 +47,6 @@ exports.getTour = (req, res) => {
   const tour = tours.find(el => el.id === id);
 
   //if (id > tours.length)
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
 
   res.status(200).json({
     status: 'success',
@@ -66,12 +83,7 @@ exports.deleteTour = (req, res) => {
   /////Deletes a single id from json
   ////////////for deleting a tour.
   console.log(req.params);
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
+
   res.status(204).json({
     status: 'success',
     data: null
@@ -82,12 +94,7 @@ exports.updateTour = (req, res) => {
   ////Updates a single tour.
   ///////for updating a tour.
   console.log(req.params);
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
+
   res.status(204).json({
     status: 'success',
     data: {

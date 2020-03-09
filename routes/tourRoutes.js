@@ -6,6 +6,15 @@ const tourController = require('./../controllers/tourController');
 
 const router = express.Router();
 
+
+
+router.param('id', (req,res,next,val)=>{//// IN param middleware we have 4 parameters.
+  console.log(`Tour i'd is ${val}`);
+  next(); 
+
+
+});
+
 router
   .route('/')
   .get(tourController.getALLTours)

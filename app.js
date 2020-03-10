@@ -4,9 +4,10 @@ const app = express();
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 ///////////////////////////////////////1. MIDDLEWARE/////////////////////////////////////
-
-app.use(morgan('dev'));
-
+console.log(process.env.nODE_ENV);
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 app.use(express.json());
 
 app.use(express.static(`${__dirname}/public`)); ///only works for static files.

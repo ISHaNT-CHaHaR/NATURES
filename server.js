@@ -26,7 +26,8 @@ const tourSchema = new mongoose.Schema({
   ////////Defining schema using MONgoose
   name: {
     type: String,
-    required: [true, 'A tour must have a name']
+    required: [true, 'A tour must have a name'],
+    unique: true
   },
   rating: {
     type: String,
@@ -37,15 +38,14 @@ const tourSchema = new mongoose.Schema({
     required: [true, 'A tour must have a price']
   }
 });
-////////////////////////////////SCHGEMA ENDED////////////////////////////
+////////////////////////////////SCHEMA ENDED////////////////////////////
 
 const Tour = mongoose.model('Tour', tourSchema); //////IT IS a schema model.
 
 const testTour = new Tour({
   //////CReated document data from MONgoose model schema.
-  name: 'The Forest Hiker',
-  rating: 4.7,
-  price: 497
+  name: 'The Park Camper',
+  price: 997
 });
 
 testTour

@@ -1,7 +1,25 @@
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const app = require('./app');
 
 dotenv.config({ path: './config.env' });
-const app = require('./app');
+const DB = process.env.DATABASE.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
+
+mongoose ////////use mongoose variable here
+
+  ////.connect(process..env.DATABASE_LOCAL,{///////in order to connefct to  ,local database
+  .connect(DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  })
+  .then(() => {
+    ///// con variable returns an object
+    console.log('DB Connection successful');
+  });
 
 const port = 3000;
 

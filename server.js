@@ -21,7 +21,27 @@ mongoose ////////use mongoose variable here
     console.log('DB Connection successful');
   });
 
-const port = 3000;
+const tourSchema = new mongoose.Schema({
+  ////////Defining schema using MONgoose
+  name: {
+    type: String,
+    required: [true, 'A tour must have a name'],
+    unique: true
+  },
+  rating: {
+    type: String,
+    default: 4.5
+  },
+  price: {
+    type: Number,
+    required: [true, 'A tour must have a price']
+  }
+});
+////////////////////////////////SCHGEMA ENDED////////////////////////////
+
+const Tour = mongoose.model('Tour', tourSchema); //////IT IS a schema model.
+
+const port = process.env.PORT || 3000;
 
 //console.log(process.env);
 app.listen(port, () => {

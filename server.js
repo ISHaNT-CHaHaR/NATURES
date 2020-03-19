@@ -7,7 +7,7 @@ const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
-
+ 
 mongoose ////////use mongoose variable here
   ////.connect(process..env.DATABASE_LOCAL,{///////in order to connect to  ,local database
   .connect(DB, {

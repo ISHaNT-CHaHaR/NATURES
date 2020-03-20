@@ -55,6 +55,7 @@ exports.getALLTours = async (req, res) => {
 exports.getTour = async (req, res) => {
   try {
     const tour = await Tour.findById(req.params.id);
+    //or use Tour.findOne({_id: req.params.id})
     res.status(200).json({
       status: 'success',
       data: {
@@ -128,15 +129,24 @@ exports.deleteTour = (req, res) => {
   });
 };
 
-exports.updateTour = (req, res) => {
+exports.updateTour = async (req, res) => {
   ////Updates a single tour.
   ///////for updating a tour.
-  console.log(req.params);
-
-  res.status(204).json({
-    status: 'success',
-    data: {
-      tour: '<Update tour here.>'
-    }
-  });
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour
+      }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'Fail!',
+      message: err
+    });
+  }
 };

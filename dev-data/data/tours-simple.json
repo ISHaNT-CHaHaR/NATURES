@@ -35,7 +35,7 @@
     "duration": 4,
     "maxGroupSize": 10,
     "difficulty": "difficult",
-    "ratingsAverage": 4.5, 
+    "ratingsAverage": 4.5,
     "ratingsQuantity": 13,
     "price": 997,
     "summary": "Exciting adventure in the snow with snowboarding and skiing",
@@ -133,17 +133,5 @@
     "imageCover": "tour-9-cover.jpg",
     "images": ["tour-9-1.jpg", "tour-9-2.jpg", "tour-9-3.jpg"],
     "startDates": ["2021-12-16,10:00", "2022-01-16,10:00", "2022-12-12,10:00"]
-  },
-  { "id": 9, "name": "TEst tour", "duration": 10, "difficulty": "easy" },
-  { "id": 10, "name": "TEst tour", "duration": 10, "difficulty": "easy" },
-  { "id": 11, "name": "TEst tour", "duration": 10, "difficulty": "easy" },
-  { "id": 12, "name": "TEst tour 5", "duration": 10, "difficulty": "easy" },
-  { "id": 13 },
-  { "id": 14 },
-  { "id": 15 },
-  { "id": 16, "name": "TEst tour 5", "duration": 10, "difficulty": "easy" },
-  { "id": 17, "name": "TEst tour 5", "duration": 10, "difficulty": "easy" },
-  { "id": 18, "name": "TEst tour 5", "duration": 10, "difficulty": "easy" },
-  { "id": 19, "name": "TEst tour 5", "duration": 10, "difficulty": "easy" },
-  { "id": 20, "name": "TEst tour 5", "duration": 10, "difficulty": "easy" }
+  }
 ]

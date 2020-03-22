@@ -34,17 +34,23 @@ exports.getALLTours = async (req, res) => {
   ///// for getting all tours.
 
   try {
+    //1.Filtering
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const queryObj = { ...req.query };
-
+    
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
 
     excludedFields.forEach(el => delete queryObj[el]);
 
-    console.log(req.query, queryObj);
+    console.log(queryObj);
 
-    const query = await Tour.find(queryObj); //BUild Query
+    //2.Advanced filtering
+    let queryStr = JSON.stringify(queryObj);
 
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+
+    const query = await Tour.find(JSON.parse(queryStr)); //BUild Query
+    // { duration: { gte: '5' }, difficulty: 'easy' }
     // const tours = await Tour.find()
     //   .where('duration')
     //   .equals(5)

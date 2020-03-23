@@ -54,8 +54,15 @@ exports.getALLTours = async (req, res) => {
       const sortBy = req.query.sort.split(',').join(' ');
 
       query = query.sort(sortBy);
-    }else{
+    } else {
       query = query.sort('-createdAt');
+    }
+
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
     }
     // { duration: { gte: '5' }, difficulty: 'easy' }
     // const tours = await Tour.find()

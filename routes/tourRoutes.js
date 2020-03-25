@@ -6,6 +6,10 @@ const tourController = require('./../controllers/tourController');
 
 const router = express.Router();
 
+router.route('/tour-stats').get(tourController.getTourStats); ////aggreagation stats
+
+router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
+
 router
   .route('/top-5-cheap')
   .get(tourController.aliasTopTours, tourController.getALLTours);

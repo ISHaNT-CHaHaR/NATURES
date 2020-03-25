@@ -5,7 +5,7 @@ const app = express();
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 ///////////////////////////////////////1. MIDDLEWARE/////////////////////////////////////
-console.log(process.env.nODE_ENV);
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
   ////////for logging module
   app.use(morgan('dev'));

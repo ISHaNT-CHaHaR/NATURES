@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
+
 const slugify = require('slugify');
+
+//const validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -8,7 +11,9 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A tour must have a name'],
       unique: true,
-      trim: true
+      trim: true,
+      maxlength: [40, 'A tour name must have less or equal then 40 characters'],
+      minlength: [10, 'A Tour name must have more or equal than 10 characters']
     },
     slug: String,
     duration: {
@@ -21,12 +26,18 @@ const tourSchema = new mongoose.Schema(
     },
     difficulty: {
       type: String,
-      required: [true, 'Tour must have a level of difficulty']
+      required: [true, 'Tour must have a level of difficulty'],
+      enum: {
+        values: ['easy', 'medium', 'difficult'],
+        message: 'Difficulty is either: easy, medium or difficult'
+      }
     },
 
     ratingsAverage: {
       type: Number,
-      default: 4.5
+      default: 4.5,
+      min: [1, 'RAting must be more than 1,0'],
+      max: [5, 'Rating must be less than 5.0']
     },
     ratingsQuantity: {
       type: Number,
@@ -36,7 +47,17 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A tour must have a price']
     },
-    priceDiscount: Number,
+    priceDiscount: {
+      type: Number,
+      validate: {
+        validator: function(val) {
+          ////This is only gonna work in post nit in update.
+          ///ONly works while new document is created.
+          return val < this.price; //100<200
+        },
+        message: 'Discount price ({VALUE}) should be correct!'
+      }
+    },
     summary: {
       type: String,
       trim: true,
@@ -103,8 +124,8 @@ tourSchema.pre('aggregate', function(next) {
   console.log(this.pipeline());
   next();
 });
+/////AGGREgation middleware///////////////
 
-/////////////////////////////AGGREgation middleware///////////////
 const Tour = mongoose.model('Tour', tourSchema); //////IT IS a schema model.
 
 module.exports = Tour;

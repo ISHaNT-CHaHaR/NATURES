@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
-    "start:prod": "SET NODE_ENV=production & nodemon server.js"
+    "start:prod": "SET NODE_ENV=production & nodemon server.js",
+    "debug": "ndb server.js"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
+    "ndb": "^1.1.5",
     "prettier": "^1.19.1"
   }
 }

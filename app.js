@@ -6,6 +6,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 ///////////////////////////////////////1. MIDDLEWARE/////////////////////////////////////
 console.log(process.env.NODE_ENV);
+
 if (process.env.NODE_ENV === 'development') {
   ////////for logging module
   app.use(morgan('dev'));
@@ -13,11 +14,6 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 
 app.use(express.static(`${__dirname}/public`)); ///only works for static files.
-
-app.use((req, res, next) => {
-  console.log(`Hello from middle of nowhere `);
-  next();
-});
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -43,6 +39,13 @@ app.use((req, res, next) => {
 app.use('/api/v1/tours', tourRouter); /////This is mounting of routers
 
 app.use('/api/v1/users', userRouter);
+
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't find  ${req.originalUrl} on this server`
+  });
+});
 
 ////////////////////////////////////4. START SERVER////////////////////////
 

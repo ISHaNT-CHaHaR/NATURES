@@ -1,3 +1,4 @@
+///////////////////////////////Global HAndler///////////////////////
 module.exports = (err, req, res, next) => {
   //console.log(err.stack);
   //Error function hmesha 4 arguments leta h in express.

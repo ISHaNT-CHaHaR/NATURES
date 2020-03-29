@@ -46,6 +46,8 @@ app.use('/api/v1/users', userRouter);
 
 //////////////////////////////////////////////////////////////////////////////////////
 app.all('*', (req, res, next) => {
+  /////ye different url ke liye h
+
   // const err = new Error(`Can't find  ${req.originalUrl} on this server`);
   // err.status = 'fail';
   // err.statusCode = 404;
@@ -55,7 +57,5 @@ app.all('*', (req, res, next) => {
 //////////////////////Global HAndler /////////////////////////////
 
 app.use(globalErrorHandler);
-
-////////////////////////////////////4. START SERVER////////////////////////
 
 module.exports = app;

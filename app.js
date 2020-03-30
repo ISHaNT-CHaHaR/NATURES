@@ -9,7 +9,6 @@ const AppError = require('./utils/appError');
 
 const globalErrorHandler = require('./controllers/errorController');
 ///////////////////////////////////////1. MIDDLEWARE/////////////////////////////////////
-console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === 'development') {
   ////////for logging module

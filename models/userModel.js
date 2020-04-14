@@ -47,6 +47,14 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
+userSchema.methods.correctPassword = async function(
+  /// its a schema method for comparing password while logging.
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword); // inbuild function
+};
+
 const User = mongoose.model('Users', userSchema);
 
 module.exports = User;

@@ -1,5 +1,7 @@
 const express = require('express');
 const tourController = require('./../controllers/tourController');
+
+const authController = require('./../controllers/authController');
 ///or/////
 //// const {getALLTours,createTour..etc} = require('./../controllers/tourController);
 ////and then use them without any efforts directly/
@@ -17,7 +19,7 @@ router
 //router.param('id', tourController.checkId);
 router
   .route('/')
-  .get(tourController.getALLTours)
+  .get(authController.protect, tourController.getALLTours)
   .post(tourController.createTour);
 
 router

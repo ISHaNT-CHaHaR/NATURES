@@ -1,3 +1,5 @@
+const { promisify } = require('util');
+
 const jwt = require('jsonwebtoken');
 
 const User = require('./../models/userModel');
@@ -19,7 +21,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm
+    passwordConfirm: req.body.passwordConfirm,
+    passwordChangedAt: req.body.passwordChangedAt
   }); ///can also used user.save or for updating too .save can be used.
 
   const token = signToken(newUser._id); // generating token
@@ -58,4 +61,42 @@ exports.login = catchAsync(async (req, res, next) => {
 
     token
   });
+});
+
+exports.protect = catchAsync(async (req, res, next) => {
+  ///1.) Getting the token and check if it exists.
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next(
+      new AppError('You are not logged in, please login to get access', 401)
+    );
+  }
+  // 2.) verifying token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+  console.log(decoded);
+  // 3) check if user still exists.
+
+  const currentUser = await User.findById(decoded.id); /// it is just to make sure that if user kust delete account at mean time.
+  if (!currentUser) {
+    return next(new AppError('The User does no longer exist', 401));
+  }
+
+  // 4) check if user change password after the jwt was issued.
+
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('USer recently changed password!, Please login again', 401)
+    );
+  }
+  ///// GRant access tom protected route
+  req.user = currentUser;
+  next();
 });

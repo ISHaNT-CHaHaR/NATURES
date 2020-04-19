@@ -11,5 +11,6 @@ const sendEmail = options => {
     // Activate "less secure app"  option
   });
   //2) define the email options
+
   //3) Send the email
 };

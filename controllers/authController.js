@@ -2,6 +2,7 @@ const { promisify } = require('util');
 
 const jwt = require('jsonwebtoken');
 
+const crypto = require('crypto');
 const User = require('./../models/userModel');
 
 const AppError = require('./../utils/appError');
@@ -130,7 +131,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   )}/api/v1/users/resetPassword/${resetToken}`;
 
   const message = `Forgot your passoword? Submit a PATCH request with your new password and 
-  passwordConfirm to: ${resetURL}.\nIf you did'nt, ignore this email`;
+  passwordConfirm to: ${resetURL}\nIf you did'nt, ignore this email`;
 
   try {
     await sendEmail({
@@ -146,7 +147,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({
-      // saving all these user chamges here without validations
+      // saving all these user changes here without validations
       validateBeforeSave: false //  this is special feature.
     });
     return next(
@@ -156,4 +157,37 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 });
 
-exports.resetPassword = (req, res, next) => {};
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  // 1) Getthe user based token
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() }
+  });
+  // 2) If token has not expired.
+
+  if (!user) {
+    return next(new AppError('Token is invalid or has EXPIRED', 400));
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.password.ResetExpires = undefined;
+
+  await user.save();
+
+  const token = signToken(user._id);
+
+  res.status(200).json({
+    status: 'success',
+    token
+  });
+
+  //3) UPdate changedPassword at property for current user
+  // 4) Log the user in.
+});

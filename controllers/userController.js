@@ -35,7 +35,7 @@ exports.deleteUser = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  res.status.json({
+  res.status(500).json({
     status: 'error',
     message: `not handled yet!`
   });
